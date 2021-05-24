@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 
-const ListTitle = ({ options }) => {
+const ListTitle = ({ options, setSeries }) => {
   const inputRef = useRef();
 
   useEffect(() => {
@@ -14,11 +14,24 @@ const ListTitle = ({ options }) => {
       inputRef.current.checked = true;
     }
   }, [options]);
-  
+
+  const handleAllChk = () => {
+    if (!inputRef.current.checked) {
+      setSeries((prev) => prev.map((data) => ({ ...data, visible: false })));
+    } else {
+      setSeries((prev) => prev.map((data) => ({ ...data, visible: true })));
+    }
+  };
+
   return (
     <li className="columns title">
       <p className="check check_all">
-        <input type="checkbox" className="input_check_all" ref={inputRef} />
+        <input
+          type="checkbox"
+          className="input_check_all"
+          ref={inputRef}
+          onClick={handleAllChk}
+        />
       </p>
       <p className="color">색상</p>
       <p className="content">항목</p>

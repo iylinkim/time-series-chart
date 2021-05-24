@@ -21,38 +21,34 @@ export const useData = () => {
 
   const getSeries = () => {
     let result = Object.keys(data).map((elm, i) => {
-      if(i < 2){
+      const max = Math.max(...data[elm].filter((data) => !isNaN(data)));
+      if (max > 100) {
         return {
           name: elm,
-          data: data[elm],
+          data: data[elm].filter((data) => !isNaN(data)),
           pointStart: Date.UTC(2020, 2, 1),
           pointInterval: 3600 * 1000,
           visible: true,
           color: colorGroup[i],
-          yAxis:0
+          yAxis: 0,
         };
-      }else{
+      } else {
         return {
           name: elm,
-          data: data[elm],
+          data: data[elm].filter((data) => !isNaN(data)),
           pointStart: Date.UTC(2020, 2, 1),
           pointInterval: 3600 * 1000,
           visible: true,
           color: colorGroup[i],
-          yAxis:1
+          yAxis: 1,
         };
       }
-     
     });
     return result;
   };
 
   useEffect(() => {
-    setSeries(
-      getSeries()
-        .filter((elm) => elm.name !== "time")
-        .slice(0, 5)
-    );
+    setSeries(getSeries().filter((elm) => elm.name !== "time"));
   }, []);
 
   return { getSeries, series, setSeries };

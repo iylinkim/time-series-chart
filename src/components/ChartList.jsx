@@ -23,8 +23,9 @@ const ChartList = ({
   }, [color]);
 
   const sum = data.reduce((a, b) => {
-    const acc = Math.round(a * 100) / 100;
+    const acc = a === 0 ? 0 : Math.round(a * 100) / 100;
     const curr = Math.round(b * 100) / 100;
+    if (isNaN(curr)) return;
     return acc + curr; //합
   }, 0);
 
@@ -39,19 +40,22 @@ const ChartList = ({
     } else {
       inputRef.current.checked = false;
     }
-  }, [info.visible]);
+  }, [info]);
 
-  const handleCheck = () => {
-    setOptions((prev) => ({
-      ...prev,
-      series: options.series.map((elm) => {
-        if (elm.name === info.name) {
-          return { ...elm, visible: !elm.visible };
-        } else {
-          return elm;
-        }
-      }),
-    }));
+  const handleCheck = (e) => {
+    const {
+      className,
+      parentNode: {
+        parentNode: { title },
+      },
+    } = e.currentTarget;
+
+    setSeries((prev) => {
+      return prev.map((data) => {
+        if (data.name === title) return { ...data, visible: !data.visible };
+        else return data;
+      });
+    });
   };
 
   const handleColor = (e) => {
@@ -68,12 +72,6 @@ const ChartList = ({
     }
   }, [yAxis]);
 
-  useEffect(() => {
-    setCurrRow(name);
-  }, [currRow]);
-
-  // console.log(currRow, name)
-
   const handleYAxis = (e) => {
     const {
       className,
@@ -81,8 +79,6 @@ const ChartList = ({
         parentNode: { title },
       },
     } = e.currentTarget;
-
-    console.dir(className, title);
 
     if (className.includes("left")) {
       setSeries((prev) =>
@@ -119,26 +115,30 @@ const ChartList = ({
       <p className="deviation">{Math.sqrt(dispersion).toFixed(2)}</p>
       <p className="min">{Math.min(...data).toFixed(2)}</p>
       <p className="max">{Math.max(...data).toFixed(2)}</p>
-      <p className="y_axis">
-        <input
-          type="radio"
-          name={`${name}_y_axis_check`}
-          className="y_axis_check left"
-          ref={leftRadio}
-          onClick={handleYAxis}
-        />
-        <label>왼쪽</label>
-        <input
-          type="radio"
-          name={`${name}_y_axis_check`}
-          className="y_axis_check right"
-          ref={rightRadio}
-          onClick={handleYAxis}
-        />
-        <label>오른쪽</label>
-      </p>
+      <div className="y_axis">
+        <p className="y_axis_check">
+          <input
+            type="radio"
+            name={`${name}_y_axis_check`}
+            className="left"
+            ref={leftRadio}
+            onClick={handleYAxis}
+          />
+          <label>왼쪽</label>
+        </p>
+        <p className="y_axis_check">
+          <input
+            type="radio"
+            name={`${name}_y_axis_check`}
+            className="right"
+            ref={rightRadio}
+            onClick={handleYAxis}
+          />
+          <label>오른쪽</label>
+        </p>
+      </div>
       <div className="color_change" onClick={handleColor}>
-        CHANGE
+        <i className="fas fa-palette"></i>
       </div>
     </li>
   );

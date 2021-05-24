@@ -50,7 +50,7 @@ function App() {
               step: 1,
             },
             title: {
-              text: "Left",
+              text: "",
             },
             opposite: false,
           },
@@ -61,7 +61,7 @@ function App() {
               // step: 0,
             },
             title: {
-              text: "Right",
+              text: "",
             },
             opposite: true,
           },
@@ -89,12 +89,10 @@ function App() {
   const chartRef = useRef();
   const handleDownload = () => chartRef.current.chart.downloadCSV();
 
-
-  console.log(series.map(data => data.yAxis))
   return (
     <>
       <header className="header">
-        <h1 className="title">Chart</h1>
+        <h1 className="title">Time-series Chart</h1>
       </header>
       <div className="wrap">
         <div className="chart_area">
@@ -110,7 +108,7 @@ function App() {
         </div>
         <div className="chart_list_area">
           <ul className="chart_list">
-            <ListTitle options={options} />
+            <ListTitle options={options} setSeries={setSeries} />
             {series
               .filter((data) => data.name !== "time")
               .map((data) => {
