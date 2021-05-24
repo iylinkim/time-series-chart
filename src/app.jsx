@@ -8,6 +8,11 @@ import ListTitle from "components/ListTitle";
 import { useData } from "hooks/state";
 import "styles/app.scss";
 
+import HC_exporting from "highcharts/modules/exporting";
+import Chart_exporting from "highcharts/modules/export-data";
+HC_exporting(Highcharts);
+Chart_exporting(Highcharts);
+
 function App() {
   const initialOptions = {
     title: { text: "" },
@@ -80,6 +85,9 @@ function App() {
     }
   }, [popupPosition]);
 
+  const chartRef = useRef();
+  const handleDownload = () => chartRef.current.chart.downloadCSV();
+
   return (
     <>
       <header className="header">
@@ -87,7 +95,15 @@ function App() {
       </header>
       <div className="wrap">
         <div className="chart_area">
-          <HighchartsReact highcharts={Highcharts} options={options} />
+          <button className="download_btn" onClick={handleDownload} >
+            <i className="fas fa-download"></i>
+            <span className="download_text"> Download</span>
+          </button>
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={options}
+            ref={chartRef}
+          />
         </div>
         <div className="chart_list_area">
           <ul className="chart_list">

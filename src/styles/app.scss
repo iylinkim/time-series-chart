@@ -12,10 +12,33 @@
 }
 .wrap {
   padding: 0 5%;
+  margin-top: 20px;
 
   /* chart_area */
   & .chart_area {
+    margin-top:50px;
     margin-bottom: 30px;
+    position: relative;
+
+    /* download btn */
+    & .download_btn {
+      padding:5px 10px;
+      position: absolute;
+      right:0;
+      top:-30px;
+      z-index:1;
+      background-color: $White;
+      outline:1px solid $Blue;
+      color:$Blue;
+
+      & .download_text{
+        color:$DarkGrey;
+      }
+
+      &:hover{
+        background-color:$SkyBlue;
+      }
+    }
   }
 
   /* chart_list_area */
