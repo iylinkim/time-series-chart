@@ -12,7 +12,7 @@ const ColorItem = ({ color, currRow, setSeries, getCircleColor }) => {
 
   const getColor = (e) => {
     const { className } = e.currentTarget;
-    
+
     getCircleColor(className);
     setSeries((prev) =>
       prev.map((data) => {

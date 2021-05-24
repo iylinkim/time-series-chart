@@ -32,20 +32,21 @@ function App() {
         ...prev,
         xAxis: {
           type: "datetime",
+          tickInterval: 3600 * 1000,
         },
-        plotOptions: {
-          series: {
-            pointStart: Date.UTC(2020, 0, 29),
-            pointEnd: Date.UTC(2020, 3, 4),
-            pointInterval: 3600 * 1000, // one day
-          },
-        },
+        // plotOptions: {
+        //   series: {
+        //     pointStart: Date.UTC(2020, 0, 29),
+        //     pointEnd: Date.UTC(2020, 3, 4),
+        //     pointInterval: 3600 * 1000, // one day
+        //   },
+        // },
 
         yAxis: [
           {
             // Primary yAxis
             labels: {
-              // format: "{value}",
+              format: "{value}",
               step: 1,
             },
             title: {
@@ -57,7 +58,7 @@ function App() {
             // Secondary yAxis
             labels: {
               format: "{value}",
-              step: 0,
+              // step: 0,
             },
             title: {
               text: "Right",
@@ -88,6 +89,8 @@ function App() {
   const chartRef = useRef();
   const handleDownload = () => chartRef.current.chart.downloadCSV();
 
+
+  console.log(series.map(data => data.yAxis))
   return (
     <>
       <header className="header">
@@ -95,7 +98,7 @@ function App() {
       </header>
       <div className="wrap">
         <div className="chart_area">
-          <button className="download_btn" onClick={handleDownload} >
+          <button className="download_btn" onClick={handleDownload}>
             <i className="fas fa-download"></i>
             <span className="download_text"> Download</span>
           </button>
@@ -122,6 +125,7 @@ function App() {
                     setCurrRow={setCurrRow}
                     newColor={newColor}
                     getPosition={getPosition}
+                    setSeries={setSeries}
                   />
                 );
               })}

@@ -21,14 +21,28 @@ export const useData = () => {
 
   const getSeries = () => {
     let result = Object.keys(data).map((elm, i) => {
-      return {
-        name: elm,
-        data: data[elm],
-        pointStart: Date.UTC(2020, 2, 1),
-        pointInterval: 3600 * 1000,
-        visible: true,
-        color: colorGroup[i],
-      };
+      if(i < 2){
+        return {
+          name: elm,
+          data: data[elm],
+          pointStart: Date.UTC(2020, 2, 1),
+          pointInterval: 3600 * 1000,
+          visible: true,
+          color: colorGroup[i],
+          yAxis:0
+        };
+      }else{
+        return {
+          name: elm,
+          data: data[elm],
+          pointStart: Date.UTC(2020, 2, 1),
+          pointInterval: 3600 * 1000,
+          visible: true,
+          color: colorGroup[i],
+          yAxis:1
+        };
+      }
+     
     });
     return result;
   };

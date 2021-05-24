@@ -6,11 +6,15 @@ const ChartList = ({
   setOptions,
   options,
   setColorPopup,
+  currRow,
   setCurrRow,
   getPosition,
+  setSeries,
 }) => {
-  const { color, name, data } = info;
+  const { color, name, data, yAxis } = info;
   const spanRef = useRef();
+  const leftRadio = useRef();
+  const rightRadio = useRef();
 
   useEffect(() => {
     if (spanRef.current) {
@@ -56,9 +60,49 @@ const ChartList = ({
     setColorPopup((prev) => !prev);
   };
 
+  useEffect(() => {
+    if (yAxis === 0) {
+      leftRadio.current.checked = true;
+    } else if (yAxis === 1) {
+      rightRadio.current.checked = true;
+    }
+  }, [yAxis]);
+
+  useEffect(() => {
+    setCurrRow(name);
+  }, [currRow]);
+
+  // console.log(currRow, name)
+
+  const handleYAxis = (e) => {
+    const {
+      className,
+      parentNode: {
+        parentNode: { title },
+      },
+    } = e.currentTarget;
+
+    console.dir(className, title);
+
+    if (className.includes("left")) {
+      setSeries((prev) =>
+        prev.map((data) => {
+          if (title === data.name) return { ...data, yAxis: 0 };
+          else return data;
+        })
+      );
+    } else if (className.includes("right")) {
+      setSeries((prev) =>
+        prev.map((data) => {
+          if (title === data.name) return { ...data, yAxis: 1 };
+          else return data;
+        })
+      );
+    }
+  };
 
   return (
-    <li className="columns chart_list_item">
+    <li className="columns chart_list_item" title={name}>
       <p className="check">
         <input
           type="checkbox"
@@ -76,9 +120,21 @@ const ChartList = ({
       <p className="min">{Math.min(...data).toFixed(2)}</p>
       <p className="max">{Math.max(...data).toFixed(2)}</p>
       <p className="y_axis">
-        <input type="radio" name="y_axis_check" className="y_axis_check" />
+        <input
+          type="radio"
+          name={`${name}_y_axis_check`}
+          className="y_axis_check left"
+          ref={leftRadio}
+          onClick={handleYAxis}
+        />
         <label>왼쪽</label>
-        <input type="radio" name="y_axis_check" className="y_axis_check" />
+        <input
+          type="radio"
+          name={`${name}_y_axis_check`}
+          className="y_axis_check right"
+          ref={rightRadio}
+          onClick={handleYAxis}
+        />
         <label>오른쪽</label>
       </p>
       <div className="color_change" onClick={handleColor}>
