@@ -1,15 +1,22 @@
 import React, { useEffect, useRef } from "react";
 import "styles/chartList.scss";
 
-const ChartList = ({ info, setOptions, options }) => {
+const ChartList = ({
+  info,
+  setOptions,
+  options,
+  setColorPopup,
+  setCurrRow,
+  getPosition,
+}) => {
   const { color, name, data } = info;
   const spanRef = useRef();
 
   useEffect(() => {
     if (spanRef.current) {
-      spanRef.current.style.backgroundColor = spanRef.current.className;
+      spanRef.current.style.backgroundColor = color;
     }
-  }, []);
+  }, [color]);
 
   const sum = data.reduce((a, b) => {
     const acc = Math.round(a * 100) / 100;
@@ -28,7 +35,7 @@ const ChartList = ({ info, setOptions, options }) => {
     } else {
       inputRef.current.checked = false;
     }
-  }, []);
+  }, [info.visible]);
 
   const handleCheck = () => {
     setOptions((prev) => ({
@@ -42,6 +49,13 @@ const ChartList = ({ info, setOptions, options }) => {
       }),
     }));
   };
+
+  const handleColor = (e) => {
+    getPosition(e.currentTarget);
+    setCurrRow(name);
+    setColorPopup((prev) => !prev);
+  };
+
 
   return (
     <li className="columns chart_list_item">
@@ -67,7 +81,9 @@ const ChartList = ({ info, setOptions, options }) => {
         <input type="radio" name="y_axis_check" className="y_axis_check" />
         <label>오른쪽</label>
       </p>
-      <div className="color_change"></div>
+      <div className="color_change" onClick={handleColor}>
+        CHANGE
+      </div>
     </li>
   );
 };

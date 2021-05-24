@@ -1,0 +1,52 @@
+@import "styles/common.scss";
+
+.color_list_area {
+  width: 400px;
+  padding: 10px;
+  border-radius: 10px;
+  position: absolute;
+  right: 5%;
+  background-color: $White;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.5s ease;
+
+  /* close button */
+  & .close{
+    width:15px;
+    height:15px;
+    line-height:15px;
+    position:absolute;
+    top:6px;
+    right:6px;
+    font-size:0.7rem;
+    text-align:center;
+    cursor:pointer;
+
+    &:hover{
+      border-radius:50%;
+      opacity:0.5;
+    }
+  }
+
+  & .color_list {
+    padding:15px 5px 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & .color_item {
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+      & > span {
+        width: 15px;
+        height: 15px;
+        display: inline-block;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+}

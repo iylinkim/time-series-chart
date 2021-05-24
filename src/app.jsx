@@ -1,63 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import HighchartsReact from "highcharts-react-official";
 import * as Highcharts from "highcharts";
-import chartData from "data/data-1.json";
 import ChartList from "components/ChartList";
-import "styles/app.scss";
 import { colorGroup } from "data/colors";
+import ColorItem from "components/ColorItem";
+import ListTitle from "components/ListTitle";
+import { useData } from "hooks/state";
+import "styles/app.scss";
 
 function App() {
   const initialOptions = {
-    title: { text: "example" },
-    chart: { type: "spline", animation: Highcharts.svg },
-    series: [], // 데이터가 처음엔 비어았다.
+    title: { text: "" },
+    chart: { type: "line" },
+    series: [], // 초기 데이터 비어있음.
   };
   const [options, setOptions] = useState(initialOptions);
-  const [data, setData] = useState({});
-  const [colors, setColors] = useState(colorGroup);
+  const [colorPopup, setColorPopup] = useState(false);
+  const [currRow, setCurrRow] = useState(null);
+  const [newColor, setNewColor] = useState("");
+  const [popupPosition, setPopupPosition] = useState({ left: 0, top: 0 });
 
-  const inputRef = useRef();
-
-  useEffect(() => {
-    const allShowing = options.series.map((option) => {
-      if (!option.visible) return false;
-      return true;
-    });
-    if (allShowing.includes(false)) {
-      inputRef.current.checked = false;
-    } else {
-      inputRef.current.checked = true;
-    }
-  }, [options]);
-
-  // 데이터 재정렬
-  useEffect(() => {
-    chartData.dataset.forEach((elm) =>
-      Object.keys(elm).forEach((key) => {
-        setData((prev) => {
-          if (prev[key] === undefined) prev[key] = [elm[key]];
-          else prev[key].push(elm[key]);
-          return prev;
-        });
-      })
-    );
-  }, []);
-
-  const getSeries = () => {
-    let result = Object.keys(data).map((elm, i) => {
-      return {
-        name: elm,
-        data: data[elm],
-        pointStart: Date.UTC(2020, 3, 29),
-        pointInterval: 3600 * 1000,
-        yAxis: 0,
-        visible: true,
-        color: colors[i],
-      };
-    });
-    return result;
-  };
-
+  const { series, setSeries } = useData();
   useEffect(() => {
     setOptions((prev) => {
       return {
@@ -97,12 +60,25 @@ function App() {
             opposite: true,
           },
         ],
-        series: getSeries()
-          .filter((elm) => elm.name !== "time")
-          .slice(0, 5),
+        series,
       };
     });
-  }, []);
+  }, [series]);
+
+  const getCircleColor = (color) => setNewColor(color);
+  const getPosition = (target) => {
+    const { offsetLeft, offsetTop, clientHeight } = target;
+    setPopupPosition({ left: offsetLeft, top: offsetTop + clientHeight });
+  };
+
+  const handleClose = () => setColorPopup((prev) => !prev);
+
+  const popupRef = useRef();
+  useEffect(() => {
+    if (popupRef.current) {
+      popupRef.current.style.top = `${popupPosition.top}px`;
+    }
+  }, [popupPosition]);
 
   return (
     <>
@@ -115,29 +91,8 @@ function App() {
         </div>
         <div className="chart_list_area">
           <ul className="chart_list">
-            <li className="columns title">
-              <p className="check check_all">
-                <input
-                  type="checkbox"
-                  className="input_check_all"
-                  ref={inputRef}
-                />
-              </p>
-              <p className="color">색상</p>
-              <p className="content">항목</p>
-              <p className="average">평균값</p>
-              <p className="deviation">편차</p>
-              <p className="min">최소값</p>
-              <p className="max">최대값</p>
-              <p className="y_axis">Y축 선택</p>
-              <p className="color_change">색상 수정</p>
-            </li>
-            {/* {Object.keys(data)
-              .filter((key) => key !== "time")
-              .map((key) => {
-                return <ChartList key={key} data={data} column={key} />;
-              })} */}
-            {getSeries()
+            <ListTitle options={options} />
+            {series
               .filter((data) => data.name !== "time")
               .map((data) => {
                 return (
@@ -146,12 +101,38 @@ function App() {
                     info={data}
                     setOptions={setOptions}
                     options={options}
+                    setColorPopup={setColorPopup}
+                    currRow={currRow}
+                    setCurrRow={setCurrRow}
+                    newColor={newColor}
+                    getPosition={getPosition}
                   />
                 );
               })}
           </ul>
         </div>
       </div>
+      {colorPopup && (
+        <div className="color_list_area" ref={popupRef}>
+          <p className="close" onClick={handleClose}>
+            <i className="fas fa-times"></i>
+          </p>
+          <ul className="color_list">
+            {colorGroup.map((color, i) => {
+              return (
+                <ColorItem
+                  key={i}
+                  color={color}
+                  setOptions={setOptions}
+                  currRow={currRow}
+                  getCircleColor={getCircleColor}
+                  setSeries={setSeries}
+                />
+              );
+            })}
+          </ul>
+        </div>
+      )}
     </>
   );
 }
