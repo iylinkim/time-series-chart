@@ -1,0 +1,13 @@
+@import "styles/common.scss";
+
+.chart_list_item {
+  border-bottom: 1px solid $LightGrey;
+
+  /* color_circle */
+  & .color_circle > span{
+    display:inline-block;
+    width:10px;
+    height:10px;
+    border-radius: 50%;
+  }
+}

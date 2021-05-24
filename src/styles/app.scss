@@ -1,0 +1,67 @@
+@import "styles/common.scss";
+
+/* header */
+.header {
+  padding: 15px 5%;
+  margin-bottom: 10px;
+  background-color: $White;
+
+  & .title {
+    font-size: 1.2rem;
+  }
+}
+.wrap {
+  padding: 0 5%;
+
+  /* chart_area */
+  & .chart_area {
+    margin-bottom: 30px;
+  }
+
+  /* chart_list_area */
+  & .chart_list_area {
+    padding: 20px 3%;
+    background-color: $White;
+  }
+}
+
+.columns.title {
+  background-color: $LightGrey;
+}
+
+.columns {
+  padding: 5px 0;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.8rem;
+  color: $DarkGrey;
+
+  & .check {
+    width: 7%;
+  }
+  & .color {
+    width: 7%;
+  }
+  & .content {
+    width: 20%;
+  }
+  & .average {
+    width: 10%;
+  }
+  & .deviation {
+    width: 10%;
+  }
+  & .min {
+    width: 10%;
+  }
+  & .max {
+    width: 10%;
+  }
+  & .y_axis {
+    width: 20%;
+  }
+  & .color_change {
+    width: 11%;
+  }
+}

@@ -1,0 +1,23 @@
+@import "styles/common.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+
+select,
+input,
+button,
+textarea {
+  border: none;
+  background: none;
+}
+
+body {
+  background-color: $LightGrey;
+}
