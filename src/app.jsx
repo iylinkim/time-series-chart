@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import HighchartsReact from "highcharts-react-official";
 import * as Highcharts from "highcharts";
 import chartData from "data/data-1.json";
 import ChartList from "components/ChartList";
 import "styles/app.scss";
+import { colorGroup } from "data/colors";
 
 function App() {
   const initialOptions = {
@@ -13,24 +14,21 @@ function App() {
   };
   const [options, setOptions] = useState(initialOptions);
   const [data, setData] = useState({});
-  const [colors, setColors] = useState([
-    "#7CB4EC",
-    "#434348",
-    "#90ED7D",
-    "#F8A35B",
-    "#8086E8",
-    "#F15D80",
-    "#E4D454",
-    "#2D908F",
-    "#F45B5B",
-    "#91E8E0",
-    "#FFFFFF",
-    "434348",
-    "90ED7D",
-    "F8A35B",
-    "8086E8",
-    "F15D80",
-  ]);
+  const [colors, setColors] = useState(colorGroup);
+
+  const inputRef = useRef();
+
+  useEffect(() => {
+    const allShowing = options.series.map((option) => {
+      if (!option.visible) return false;
+      return true;
+    });
+    if (allShowing.includes(false)) {
+      inputRef.current.checked = false;
+    } else {
+      inputRef.current.checked = true;
+    }
+  }, [options]);
 
   // 데이터 재정렬
   useEffect(() => {
@@ -50,17 +48,15 @@ function App() {
       return {
         name: elm,
         data: data[elm],
-        // pointStart: Date.UTC(2021, 0, 1),
-        // pointInterval: 3600 * 1000, // one hour
-        // yAxis: 0,
+        pointStart: Date.UTC(2020, 3, 29),
+        pointInterval: 3600 * 1000,
+        yAxis: 0,
         visible: true,
-        color:colors[i]
+        color: colors[i],
       };
     });
     return result;
   };
-
-  console.log(getSeries())
 
   useEffect(() => {
     setOptions((prev) => {
@@ -68,17 +64,15 @@ function App() {
         ...prev,
         xAxis: {
           type: "datetime",
-          // labels: {
-          //   formatter: function () {
-          //     console.log(this.value);
-          //     return `${new Date(this.value).getHours()}:${new Date(
-          //       this.value
-          //     ).getMinutes()}`;
-          //   },
-          // },
-          // categories: getSeries().filter((elm) => elm.name === "time"),
-          // categories:[1,2,3,4,5],
         },
+        plotOptions: {
+          series: {
+            pointStart: Date.UTC(2020, 0, 29),
+            pointEnd: Date.UTC(2020, 3, 4),
+            pointInterval: 3600 * 1000, // one day
+          },
+        },
+
         yAxis: [
           {
             // Primary yAxis
@@ -103,7 +97,9 @@ function App() {
             opposite: true,
           },
         ],
-        series: getSeries().filter((elm) => elm.name !== "time").slice(0,5),
+        series: getSeries()
+          .filter((elm) => elm.name !== "time")
+          .slice(0, 5),
       };
     });
   }, []);
@@ -121,7 +117,11 @@ function App() {
           <ul className="chart_list">
             <li className="columns title">
               <p className="check check_all">
-                <input type="checkbox" className="input_check_all" />
+                <input
+                  type="checkbox"
+                  className="input_check_all"
+                  ref={inputRef}
+                />
               </p>
               <p className="color">색상</p>
               <p className="content">항목</p>
@@ -137,8 +137,17 @@ function App() {
               .map((key) => {
                 return <ChartList key={key} data={data} column={key} />;
               })} */}
-              {getSeries().filter(data => data.name !== "time").map(data => {
-                return  <ChartList key={data.name} info={data} />;
+            {getSeries()
+              .filter((data) => data.name !== "time")
+              .map((data) => {
+                return (
+                  <ChartList
+                    key={data.name}
+                    info={data}
+                    setOptions={setOptions}
+                    options={options}
+                  />
+                );
               })}
           </ul>
         </div>
