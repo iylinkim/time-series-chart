@@ -53,6 +53,8 @@ Project is created with:
 
 ## 📑 Descriptions
 
+- Split a component into ***smaller components*** (e.g. Header, DownloadBtn, ListTitle...)
+- Apply Y axis depends on each chart's maximum value (less than 100 and greater than 100)
 - Use **_modules/exporting_** and **_modules/export-data_** for exporting CSV file (highcharts)
 - State management with hooks folder
 - Manage Highcharts options with options.js
