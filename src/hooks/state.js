@@ -31,6 +31,7 @@ export const useData = () => {
         color: colorGroup[i],
         yAxis: 0,
       };
+
       if (max > 100) {
         return { ...seriesObject, yAxis: 1 };
       } else {
@@ -40,11 +41,38 @@ export const useData = () => {
     return result;
   };
 
+  const handleYAxis = (e) => {
+    const {
+      className,
+      parentNode: {
+        parentNode: {
+          parentNode: { title },
+        },
+      },
+    } = e.currentTarget;
+
+    if (className === "left") {
+      setSeries((prev) =>
+        prev.map((data) => {
+          if (title === data.name) return { ...data, yAxis: 0 };
+          else return data;
+        })
+      );
+    } else if (className === "right") {
+      setSeries((prev) =>
+        prev.map((data) => {
+          if (title === data.name) return { ...data, yAxis: 1 };
+          else return data;
+        })
+      );
+    }
+  };
+
   useEffect(() => {
     setSeries(getSeries().filter((elm) => elm.name !== "time"));
   }, []);
 
-  return { getSeries, series, setSeries };
+  return { getSeries, series, setSeries,handleYAxis };
 };
 
 export const useCalculate = (numberData) => {
@@ -72,12 +100,12 @@ export const useCalculate = (numberData) => {
   };
 
   useEffect(() => {
-    setResult({
+    setResult((prev) => ({
       sum: getSum(numberData),
-      average: result.sum / numberData.length,
-      dispersion: getDispersion(numberData, result.average),
-    });
-  }, []);
+      average: getSum(numberData) / numberData.length,
+      dispersion: getDispersion(numberData, prev.average),
+    }));
+  }, [numberData]);
 
   return result;
 };

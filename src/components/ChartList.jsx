@@ -8,6 +8,7 @@ const ChartList = ({
   setCurrRow,
   getPosition,
   setSeries,
+  handleYAxis,
 }) => {
   const { color, name, data, yAxis } = info;
   const inputRef = useRef();
@@ -59,31 +60,6 @@ const ChartList = ({
       rightRadio.current.checked = true;
     }
   }, [yAxis]);
-
-  const handleYAxis = (e) => {
-    const {
-      className,
-      parentNode: {
-        parentNode: { title },
-      },
-    } = e.currentTarget;
-
-    if (className.includes("left")) {
-      setSeries((prev) =>
-        prev.map((data) => {
-          if (title === data.name) return { ...data, yAxis: 0 };
-          else return data;
-        })
-      );
-    } else if (className.includes("right")) {
-      setSeries((prev) =>
-        prev.map((data) => {
-          if (title === data.name) return { ...data, yAxis: 1 };
-          else return data;
-        })
-      );
-    }
-  };
 
   return (
     <li className="columns chart_list_item" title={name}>
