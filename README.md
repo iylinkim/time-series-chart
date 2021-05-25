@@ -53,12 +53,15 @@ Project is created with:
 
 ## 📑 Descriptions
 
-- Split a component into ***smaller components*** (e.g. Header, DownloadBtn, ListTitle...)
+- Data rearangement (Create a object which has **_key for category_** and **_value with data arrays_**)
+<p><img width="400" alt="스크린샷 2021-05-25 오후 1 01 54" src="https://user-images.githubusercontent.com/66230563/119437662-92595880-bd59-11eb-8dbc-ae7224afbb9b.png"></p>
+
+- Split a component into **_smaller components_** (e.g. Header, DownloadBtn, ListTitle...)
 - Apply Y axis depends on each chart's maximum value (less than 100 and greater than 100)
 - Use **_modules/exporting_** and **_modules/export-data_** for exporting CSV file (highcharts)
 - State management with hooks folder
 - Manage Highcharts options with options.js
 
-- used libraries
+- Used libraries
   - [Highcharts](https://www.highcharts.com/)
   - [Fontawesome](https://fontawesome.com/)

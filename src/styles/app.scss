@@ -1,3 +1,4 @@
+
 @import "styles/common.scss";
 
 /* header */
@@ -87,4 +88,9 @@
   & .color_change {
     width: 11%;
   }
+}
+
+/* highcharts-contextbutton */
+.highcharts-contextbutton{
+  display:none;
 }

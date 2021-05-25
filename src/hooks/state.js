@@ -19,13 +19,15 @@ export const useData = () => {
     );
   }, []);
 
+  console.log(data)
+
   const getSeries = () => {
     let result = Object.keys(data).map((elm, i) => {
       const max = Math.max(...data[elm].filter((data) => !isNaN(data)));
       const seriesObject = {
         name: elm,
         data: data[elm].filter((data) => !isNaN(data)),
-        pointStart: Date.UTC(2020, 2, 1),
+        pointStart: Date.UTC(2020, 2, 29),
         pointInterval: 3600 * 1000,
         visible: true,
         color: colorGroup[i],
