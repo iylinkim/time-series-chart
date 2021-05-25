@@ -6,13 +6,13 @@ import ChartList from "components/ChartList";
 import { colorGroup } from "data/colors";
 import ColorItem from "components/ColorItem";
 import ListTitle from "components/ListTitle";
+import Header from "components/Header";
 import { useData } from "hooks/state";
-import "styles/app.scss";
-
 import HC_exporting from "highcharts/modules/exporting";
 import Chart_exporting from "highcharts/modules/export-data";
-import Header from "components/Header";
 import DownloadBtn from "components/DownloadBtn";
+import "styles/app.scss";
+
 HC_exporting(Highcharts);
 Chart_exporting(Highcharts);
 
