@@ -1,50 +1,24 @@
+import { useCalculate } from "hooks/state";
 import React, { useEffect, useRef } from "react";
 import "styles/chartList.scss";
 
 const ChartList = ({
   info,
-  setOptions,
-  options,
   setColorPopup,
-  currRow,
   setCurrRow,
   getPosition,
   setSeries,
 }) => {
   const { color, name, data, yAxis } = info;
+  const inputRef = useRef();
   const spanRef = useRef();
   const leftRadio = useRef();
   const rightRadio = useRef();
 
-  useEffect(() => {
-    if (spanRef.current) {
-      spanRef.current.style.backgroundColor = color;
-    }
-  }, [color]);
-
-  const sum = data.reduce((a, b) => {
-    const acc = a === 0 ? 0 : Math.round(a * 100) / 100;
-    const curr = Math.round(b * 100) / 100;
-    if (isNaN(curr)) return;
-    return acc + curr; //합
-  }, 0);
-
-  const average = sum / data.length; // 평균;
-  const dispersion =
-    data.reduce((a, b) => a + Math.pow(b - average, 2), 0) / data.length; //분산
-
-  const inputRef = useRef();
-  useEffect(() => {
-    if (info.visible) {
-      inputRef.current.checked = true;
-    } else {
-      inputRef.current.checked = false;
-    }
-  }, [info]);
+  const { average, dispersion } = useCalculate(data);
 
   const handleCheck = (e) => {
     const {
-      className,
       parentNode: {
         parentNode: { title },
       },
@@ -63,6 +37,20 @@ const ChartList = ({
     setCurrRow(name);
     setColorPopup((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (info.visible) {
+      inputRef.current.checked = true;
+    } else {
+      inputRef.current.checked = false;
+    }
+  }, [info]);
+
+  useEffect(() => {
+    if (spanRef.current) {
+      spanRef.current.style.backgroundColor = color;
+    }
+  }, [color]);
 
   useEffect(() => {
     if (yAxis === 0) {

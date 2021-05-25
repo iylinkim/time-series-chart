@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { initialOptions, axes } from "data/options";
 import HighchartsReact from "highcharts-react-official";
 import * as Highcharts from "highcharts";
 import ChartList from "components/ChartList";
@@ -10,15 +11,12 @@ import "styles/app.scss";
 
 import HC_exporting from "highcharts/modules/exporting";
 import Chart_exporting from "highcharts/modules/export-data";
+import Header from "components/Header";
+import DownloadBtn from "components/DownloadBtn";
 HC_exporting(Highcharts);
 Chart_exporting(Highcharts);
 
 function App() {
-  const initialOptions = {
-    title: { text: "" },
-    chart: { type: "line" },
-    series: [], // 초기 데이터 비어있음.
-  };
   const [options, setOptions] = useState(initialOptions);
   const [colorPopup, setColorPopup] = useState(false);
   const [currRow, setCurrRow] = useState(null);
@@ -30,42 +28,7 @@ function App() {
     setOptions((prev) => {
       return {
         ...prev,
-        xAxis: {
-          type: "datetime",
-          tickInterval: 3600 * 1000,
-        },
-        // plotOptions: {
-        //   series: {
-        //     pointStart: Date.UTC(2020, 0, 29),
-        //     pointEnd: Date.UTC(2020, 3, 4),
-        //     pointInterval: 3600 * 1000, // one day
-        //   },
-        // },
-
-        yAxis: [
-          {
-            // Primary yAxis
-            labels: {
-              format: "{value}",
-              step: 1,
-            },
-            title: {
-              text: "",
-            },
-            opposite: false,
-          },
-          {
-            // Secondary yAxis
-            labels: {
-              format: "{value}",
-              // step: 0,
-            },
-            title: {
-              text: "",
-            },
-            opposite: true,
-          },
-        ],
+        ...axes,
         series,
       };
     });
@@ -91,15 +54,10 @@ function App() {
 
   return (
     <>
-      <header className="header">
-        <h1 className="title">Time-series Chart</h1>
-      </header>
+      <Header />
       <div className="wrap">
         <div className="chart_area">
-          <button className="download_btn" onClick={handleDownload}>
-            <i className="fas fa-download"></i>
-            <span className="download_text"> Download</span>
-          </button>
+          <DownloadBtn handleDownload={handleDownload} />
           <HighchartsReact
             highcharts={Highcharts}
             options={options}
@@ -116,12 +74,8 @@ function App() {
                   <ChartList
                     key={data.name}
                     info={data}
-                    setOptions={setOptions}
-                    options={options}
                     setColorPopup={setColorPopup}
-                    currRow={currRow}
                     setCurrRow={setCurrRow}
-                    newColor={newColor}
                     getPosition={getPosition}
                     setSeries={setSeries}
                   />
@@ -141,10 +95,9 @@ function App() {
                 <ColorItem
                   key={i}
                   color={color}
-                  setOptions={setOptions}
                   currRow={currRow}
-                  getCircleColor={getCircleColor}
                   setSeries={setSeries}
+                  getCircleColor={getCircleColor}
                 />
               );
             })}

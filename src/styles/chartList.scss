@@ -4,38 +4,38 @@
   border-bottom: 1px solid $LightGrey;
 
   /* color_circle */
-  & .color_circle > span{
-    display:inline-block;
-    width:10px;
-    height:10px;
+  & .color_circle > span {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
   }
 
   /* y_axis */
-  & .y_axis{
-    text-align:center;
-    display:flex;
+  & .y_axis {
+    text-align: center;
+    display: flex;
     justify-content: space-around;
-    align-items:center;
-    font-size:0.7rem;
+    align-items: center;
+    font-size: 0.7rem;
 
-    & .y_axis_check{
+    & .y_axis_check {
       display: flex;
       align-items: center;
 
-      & > input{
-        margin-right:5px;
+      & > input {
+        margin-right: 5px;
       }
     }
   }
 
   /* color_change */
-  & .color_change{
-    color:$Mint;
-    cursor:pointer;
+  & .color_change {
+    color: $Mint;
+    cursor: pointer;
 
-    &:hover{
-      opacity:0.7;
+    &:hover {
+      opacity: 0.7;
     }
   }
 }

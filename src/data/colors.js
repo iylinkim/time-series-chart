@@ -9,9 +9,11 @@ export const colorGroup = [
   "#2D908F",
   "#F45B5B",
   "#91E8E0",
-  "#F6F6F6",
+  "#D1EC35",
   "#434348",
   "#F8A35B",
   "#8086E8",
   "#F15D80",
+  "#C25DF1",
+  "#5DF1B8",
 ];
