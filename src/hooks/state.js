@@ -19,8 +19,6 @@ export const useData = () => {
     );
   }, []);
 
-  console.log(data)
-
   const getSeries = () => {
     let result = Object.keys(data).map((elm, i) => {
       const max = Math.max(...data[elm].filter((data) => !isNaN(data)));
@@ -74,7 +72,7 @@ export const useData = () => {
     setSeries(getSeries().filter((elm) => elm.name !== "time"));
   }, []);
 
-  return { getSeries, series, setSeries,handleYAxis };
+  return { getSeries, series, setSeries, handleYAxis };
 };
 
 export const useCalculate = (numberData) => {

@@ -23,7 +23,7 @@ function App() {
   const [newColor, setNewColor] = useState("");
   const [popupPosition, setPopupPosition] = useState({ left: 0, top: 0 });
 
-  const { series, setSeries,handleYAxis } = useData();
+  const { series, setSeries, handleYAxis } = useData();
   useEffect(() => {
     setOptions((prev) => {
       return {
@@ -51,8 +51,6 @@ function App() {
 
   const chartRef = useRef();
   const handleDownload = () => chartRef.current.chart.downloadCSV();
-
-
 
   return (
     <>
